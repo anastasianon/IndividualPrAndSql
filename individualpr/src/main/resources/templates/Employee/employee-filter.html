@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Поиск сотрудника</title>
+</head>
+<body>
+
+<div th:insert="Blocks/Header">...</div>
+<div class="max-w-sm rounded overflow-hidden shadow-lg">
+    <h2>Фильтрация</h2>
+    <form method="get" th:action="${'/adminEmployee/filter'}">
+        <label>
+            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   type="text" name="surname" th:value="${surname}">
+        </label>
+        <button type="submit">Найти</button>
+        <label>
+            Точный поиск:
+            <input type="checkbox" name="accurate_search" placeholder="Точный поиск" th:checked="${accurate_search}">
+        </label>
+
+        <div class="w-full max-w-xs" th:each="el : ${result}">
+            <div class="font-bold text-xl mb-2" th:text="${'Фамилия: '+el.surname}"></div>
+            <p class="text-gray-700 text-base" th:text="${'Имя: '+el.name}"></p>
+            <p class="text-gray-700 text-base" th:text="${'Отчество: '+el.middlename}"></p>
+            <p class="text-gray-700 text-base" th:text="${'Почта: '+el.address}"></p>
+            <p class="text-gray-700 text-base" th:text="${'Номер телефона: '+el.numberphone}"></p>
+            <p class="text-gray-700 text-base" th:text="${'Отчество: '+el.middlename}"></p>
+            <p class="text-gray-700 text-base" th:text="${'Роль сотрудника: '+el.user.roles}"></p>
+            <p class="text-gray-700 text-base" th:text="${'Логин сотрудника: '+el.user.login}"></p>
+            <p class="text-gray-700 text-base" th:text="${'Должность сотрудника: '+el.post.titlepost}"></p>
+            <p class="text-gray-700 text-base" th:text="${'Оклад сотрудника: '+el.post.salary+' руб.'}"></p>
+            <div class="px-6 pt-4 pb-2">
+            <a class="underline text-blue-600" th:href="'/adminEmployee/edit/'+${el.id}"
+               sec:authorize="isAuthenticated()">Редактировать</a>
+            <a class="underline text-blue-600" th:href="'/adminEmployee/del/'+${el.id}"
+               sec:authorize="isAuthenticated()">Удалить</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

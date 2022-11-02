@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title th:value="${'Редактирование сотрудника '+employee.surname}"></title>
+</head>
+<body>
+
+<div th:insert="Blocks/Header">...</div>
+
+<div class="w-full max-w-xs">
+    <form th:action="${'/adminEmployee/edit/'+employee.id}" th:object="${employee}" method="post"
+          class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Фамилия</label>
+            <div style="color: red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
+            <input th:field="*{surname}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   type="text" name="surname" placeholder="Введите фамилию">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Имя</label>
+            <div style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            <input th:field="*{name}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   type="text" name="name" placeholder="Введите имя">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Отчество</label>
+            <div style="color: red" th:if="${#fields.hasErrors('middlename')}" th:errors="*{middlename}"></div>
+            <input th:field="*{middlename}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   type="text" name="middlename" placeholder="Введите Отчество">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Серия паспорта</label>
+            <div style="color: red" th:if="${#fields.hasErrors('serialpassport')}" th:errors="*{serialpassport}"></div>
+            <input th:field="*{serialpassport}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   type="number" name="middlename" placeholder="Введите серию паспорта">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Номер паспорта</label>
+            <div style="color: red" th:if="${#fields.hasErrors('numberpassport')}" th:errors="*{numberpassport}"></div>
+            <input th:field="*{numberpassport}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   type="number" name="numberpassport" placeholder="Введите номер паспорта">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Пользователь</label>
+            <div style="color: red" th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></div>
+            <select th:field="*{user}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    name="author">
+                <option th:each="user : ${users}"
+                        th:if="${(employee.user != null && user.id.equals(employee.user.id)) || (user.client==null && user.employee==null)}"
+                        th:value="${user.id}"
+                        th:text="${user.login+' | '+user.roles}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Должность</label>
+            <div style="color: red" th:if="${#fields.hasErrors('post')}" th:errors="*{post}"></div>
+            <select th:field="*{post}"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    name="author">
+                <option th:each="post : ${posts}"
+                        th:value="${post.id}"
+                        th:text="${post.titlepost + ' | ' + post.salary}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Адрес</label>
+            <div style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+            <input th:field="*{address}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   type="text" name="address" placeholder="Введите адрес">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Номер телефона</label>
+            <div style="color: red" th:if="${#fields.hasErrors('numberphone')}" th:errors="*{numberphone}"></div>
+            <input th:field="*{numberphone}"
+                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                   type="text" name="numberphone" placeholder="Введите номер телефона">
+        </div>
+
+
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="submit">Сохранить
+        </button>
+    </form>
+</div>
+
+</body>
+</html>
